@@ -22,11 +22,11 @@ class PublicIngredientAPITests(TestCase):
 
 class PrivateIngredientAPITests(TestCase):
     def setUp(self):
-        self.client = APIClient
         self.user = get_user_model().objects.create_user(
-            email='nilo@nilo.com',
-            password='123'
+            email='nilo@email.com',
+            name='Nilo Neto'
         )
+        self.client = APIClient()
         self.client.force_authenticate(self.user)
 
     def test_retrive_ingredients_list(self):
@@ -34,11 +34,24 @@ class PrivateIngredientAPITests(TestCase):
         Ingredient.objects.create(user=self.user, name='Salt')
 
         res = self.client.get(INGREDIENT_URL)
-
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
         ingredients = Ingredient.objects.all().order_by('-name')
         serializer = IngredientSerializer(ingredients, many=True)
 
-        self.assertEqual(ingredients, serializer)
+        self.assertEqual(res.data, serializer.data)
 
+    def test_ingredients_limited_to_user(self):
+        user2 = get_user_model().objects.create_user(
+            email='nilo2@nilo.com',
+            password='123456'
+        )
+
+        ingredient = Ingredient.objects.create(user=self.user, name='Kale')
+        Ingredient.objects.create(user=user2, name='Salt')
+
+        res = self.client.get(INGREDIENT_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 1)
+        self.assertEqual(res.data[0]['name'], ingredient.name)
