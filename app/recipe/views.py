@@ -5,7 +5,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 
-class BasicViewSet(
+class BasicRecipeViewSet(
     viewsets.GenericViewSet,
     mixins.ListModelMixin,
     mixins.CreateModelMixin
@@ -21,13 +21,13 @@ class BasicViewSet(
         serializer.save(user=self.request.user)
 
 
-class TagViewSet(BasicViewSet):
+class TagViewSet(BasicRecipeViewSet):
     """Manage tags in the database"""
     queryset = Tag.objects.all()
     serializer_class = serializers.TagSerializer
 
 
-class IngredientViewSet(BasicViewSet):
+class IngredientViewSet(BasicRecipeViewSet):
     """Manage ingredients in the database"""
     queryset = Ingredient.objects.all()
     serializer_class = serializers.IngredientSerializer
