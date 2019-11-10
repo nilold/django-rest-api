@@ -10,7 +10,7 @@ from core.models import Tag
 from recipe.serializers import TagSerializer
 
 
-TAGS_URL = reverse('recipe:tag-list')
+TAGS_URL = reverse('recipe:tag-\list')
 
 
 class PublicTagsAPITests(TestCase):
@@ -53,6 +53,8 @@ class PrivateTagsAPITests(TestCase):
 
         Tag.objects.create(user=self.user, name='Vegan')
         Tag.objects.create(user=self.user2, name='Main')
+
+        print(TAGS_URL)
 
         res = self.client.get(TAGS_URL)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
