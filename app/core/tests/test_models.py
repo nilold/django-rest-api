@@ -85,6 +85,22 @@ class ModelTests(TestCase):
 
         self.assertEqual(str(recipe), recipe.title)
 
+    def test_recipe_book_str(self):
+        user = sample_user()
+        recipe_book = models.RecipeBook.objects.create(
+            user=user,
+            title='My Favourite Deserts',
+        )
+        recipe = models.Recipe.objects.create(
+            user=user,
+            title='Cheesecake',
+            time_minutes=5,
+            price=8.00
+        )
+        recipe_book.recipes.add(recipe)
+
+        self.assertEqual(str(recipe_book), recipe_book.title)
+
     @patch('uuid.uuid4')
     def test_recipe_filename_uuid(self, mock_uuid):
         uuid = 'mock_uuid'

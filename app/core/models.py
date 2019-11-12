@@ -91,3 +91,15 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class RecipeBook(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    title = models.CharField(max_length=255)
+    recipes = models.ManyToManyField('Recipe')
+
+    def __str__(self):
+        return self.title

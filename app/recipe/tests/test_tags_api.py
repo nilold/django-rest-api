@@ -101,8 +101,6 @@ class PrivateTagsAPITests(TestCase):
         serializer_tag_1 = TagSerializer(tag1)
         serializer_tag_2 = TagSerializer(tag2)
 
-        print(serializer_tag_1)
-
         self.assertIn(serializer_tag_1.data, res.data)
         self.assertNotIn(serializer_tag_2.data, res.data)
 
