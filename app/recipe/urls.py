@@ -5,13 +5,11 @@ from recipe import views
 
 
 router = DefaultRouter()
-router.register('tags', views.TagViewSet)
-router.register('ingredients', views.IngredientViewSet)
-router.register('recipes', views.RecipeViewSet)
-router.register('recipebooks', views.RecipeBookViewSet)
+router.register("tags", views.TagViewSet)
+router.register("ingredients", views.IngredientViewSet)
+router.register("recipes", views.RecipeViewSet)
+router.register("recipebooks", views.RecipeBookViewSet)
 
-app_name = 'recipe'
+app_name = "recipe"
 
-urlpatterns = [
-    path('', include(router.urls))
-]
+urlpatterns = [path("", include(router.urls))]

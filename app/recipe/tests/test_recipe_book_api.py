@@ -6,15 +6,11 @@ from rest_framework import status
 from core.models import RecipeBook, Recipe
 from recipe.serializers import RecipeBookSerializer
 
-RECIPE_BOOK_URL = reverse('recipe:recipebook-list')
+RECIPE_BOOK_URL = reverse("recipe:recipebook-list")
 
 
 def create_sample_recipe(user, **kwargs):
-    defaults = {
-        'title': 'Cheesecake',
-        'time_minutes': 5,
-        'price': 8.00
-    }
+    defaults = {"title": "Cheesecake", "time_minutes": 5, "price": 8.00}
     defaults.update(kwargs)
     recipe = Recipe.objects.create(user=user, **defaults)
 
@@ -34,16 +30,12 @@ class PrivateRecipeBookAPITests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = get_user_model().objects.create(
-            email='test@test.com',
-            password='1234567'
+            email="test@test.com", password="1234567"
         )
         self.client.force_authenticate(self.user)
 
     def test_get_recipe_book_list(self):
-        recipe_book = RecipeBook.objects.create(
-            user=self.user,
-            title='My Book'
-        )
+        recipe_book = RecipeBook.objects.create(user=self.user, title="My Book")
         recipe_book.recipes.add(create_sample_recipe(self.user))
         serialized_rb = RecipeBookSerializer(recipe_book)
 
